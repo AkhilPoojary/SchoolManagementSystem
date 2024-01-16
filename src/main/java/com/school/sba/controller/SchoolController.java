@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.school.sba.entity.School;
+import com.school.sba.entity.User;
 import com.school.sba.service.SchoolService;
 import com.school.sba.utility.ResponseStrcture;
 
@@ -48,6 +49,9 @@ public class SchoolController {
 	{
 		return schseri.deleteSchool(id);
 	}
+	
+
+	
 	
 
 }

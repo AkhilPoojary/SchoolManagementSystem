@@ -1,12 +1,14 @@
 package com.school.sba.utility;
 
-import java.util.List;
 
-import com.school.sba.entity.School;
+
+
+
+import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
-
+@Component
 @Setter
 @Getter
 public class ResponseStrcture<T> {

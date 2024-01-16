@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.School;
+import com.school.sba.entity.User;
 import com.school.sba.repository.SchoolRepository;
 import com.school.sba.service.SchoolService;
 import com.school.sba.utility.ResponseStrcture;
@@ -91,6 +92,8 @@ Optional<School> findbyid = schrepo.findById(id);
 		
 		
 	}
+
+	
 		
 		
 		
