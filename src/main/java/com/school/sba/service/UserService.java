@@ -14,4 +14,6 @@ public interface UserService {
 
 	ResponseEntity<ResponseStrcture<UserResponse>> deleteTheUser(int userId);
 
+
+
 }
