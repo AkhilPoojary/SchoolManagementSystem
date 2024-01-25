@@ -8,11 +8,23 @@ import com.school.sba.utility.ResponseStrcture;
 
 public interface UserService {
 
-	ResponseEntity<ResponseStrcture<UserResponse>> addUser(UserRequest user);
+	ResponseEntity<ResponseStrcture<UserResponse>> addAdmin(UserRequest user);
+	
+	ResponseEntity<ResponseStrcture<UserResponse>> addOtherUser(UserRequest user);
 
 	ResponseEntity<ResponseStrcture<UserResponse>> findUser(int userId);
 
 	ResponseEntity<ResponseStrcture<UserResponse>> deleteTheUser(int userId);
+
+	ResponseEntity<ResponseStrcture<UserResponse>> updateUser(int userId, UserRequest userRequest);
+
+	ResponseEntity<ResponseStrcture<UserResponse>> assignToAcademicProgram(int programId, int userId);
+
+	ResponseEntity<ResponseStrcture<UserResponse>> assignSubjectToTeacher(int subjectId, int userId);
+
+
+
+
 
 
 

@@ -12,13 +12,18 @@ import com.school.sba.utility.ResponseStrcture;
 
 public interface SchoolService {
 	
-	public ResponseEntity<ResponseStrcture<SchoolResponse>> addSchool(SchoolRequest school,int userId);
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> addSchool(SchoolRequest school);
 	
-	public ResponseEntity<ResponseStrcture<List<School>>> findSchool();
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> findSchool(int schoolId);
 	
-	public ResponseEntity<ResponseStrcture<School>> updateSchool(int id,School updaeSchool);
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> updateSchool(int schoolId,SchoolRequest updaeSchool);
 	
-	public ResponseEntity<ResponseStrcture<School>> deleteSchool(int id);
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> deleteSchool(int schoolId);
+
+
+
+
+	
 	
 	
 	

@@ -1,56 +1,51 @@
 package com.school.sba.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.school.sba.entity.School;
-import com.school.sba.entity.User;
 import com.school.sba.requestdto.SchoolRequest;
 import com.school.sba.responsedto.SchoolResponse;
 import com.school.sba.service.SchoolService;
 import com.school.sba.utility.ResponseStrcture;
 
 @RestController
-@RequestMapping("/school")
+
 public class SchoolController {
 	
 	@Autowired
 	private SchoolService schoolservice;
 	
-	@PostMapping("/users/{userId}/schools")
-	public ResponseEntity<ResponseStrcture<SchoolResponse>> addSchoolContr(@RequestBody SchoolRequest school,@PathVariable int userId)
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/users/schools")
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> addSchoolContr(@RequestBody SchoolRequest school)
 	{
-		return schoolservice.addSchool(school,userId);
+		return schoolservice.addSchool(school);
 	}
 	
-	@GetMapping("/schools")
-	public ResponseEntity<ResponseStrcture<List<School>>> findAllSchool()
+	@GetMapping("/schools/{schoolId}")
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> findSchool(@PathVariable int schoolId)
 	{
-		return schoolservice.findSchool();
+		return schoolservice.findSchool(schoolId);
 	}
 	
 	@PutMapping("/schools/{schoolId}")
-	public ResponseEntity<ResponseStrcture<School>> updateSchoolController(@RequestParam int id,@RequestBody School school)
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> updateSchool(@PathVariable int schoolId,@RequestBody SchoolRequest school)
 	{
-		return schoolservice.updateSchool(id, school);
+		return schoolservice.updateSchool(schoolId, school);
 	}
 	
-	
 	@DeleteMapping("/schools/{schoolId}")
-	public ResponseEntity<ResponseStrcture<School>> updateSchoolController(@RequestParam int id)
-	{
-		return schoolservice.deleteSchool(id);
+	public ResponseEntity<ResponseStrcture<SchoolResponse>> deleteSchool(@PathVariable Integer schoolId){
+		return schoolservice.deleteSchool(schoolId);
 	}
 	
 	

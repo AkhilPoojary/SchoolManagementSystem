@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class SchoolRequest {
-	private int schoolId;
+	
 	private String schoolName;
 	private long contactNo;
 	private String email;
