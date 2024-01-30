@@ -1,6 +1,7 @@
 package com.school.sba.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.school.sba.enums.ProgramType;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +30,8 @@ public class AcademicProgram {
 	private int programid;	
 	private ProgramType programType;
 	private String programName;
-	private LocalTime beginTime;
-	private LocalTime endTime;
+	private LocalDate beginTime;
+	private LocalDate endTime;
 
 	@ManyToOne
 	private School school;
@@ -39,6 +41,9 @@ public class AcademicProgram {
 	
 	@ManyToMany
 	private List<User> listOfUsers;
+	
+	@OneToMany
+	private List<ClassHour> classHour;
 
 
 }

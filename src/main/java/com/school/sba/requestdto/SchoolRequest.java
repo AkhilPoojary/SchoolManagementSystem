@@ -1,5 +1,7 @@
 package com.school.sba.requestdto;
 
+import java.time.DayOfWeek;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +15,5 @@ public class SchoolRequest {
 	private long contactNo;
 	private String email;
 	private String address;
+	private DayOfWeek day;
 }

@@ -1,5 +1,6 @@
 package com.school.sba.entity;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ private String schoolName;
 private long contactNo;
 private String email;
 private String address;
+private DayOfWeek day;
 
 
 @OneToOne

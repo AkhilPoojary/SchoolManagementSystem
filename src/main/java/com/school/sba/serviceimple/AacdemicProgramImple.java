@@ -1,5 +1,6 @@
 package com.school.sba.serviceimple;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,7 +116,8 @@ public class AacdemicProgramImple implements AcademicProgramService
 	private AcademicProgram mapToAcademicProgram(AcademicProgramRequest acdemic)
 	{
 		return AcademicProgram.builder()
-				.programid(acdemic.getProgramid())
+				
+				.programType(acdemic.getProgramType())
 				.programName(acdemic.getProgramName())
 				.beginTime(acdemic.getBeginTime())
 				.endTime(acdemic.getEndTime())

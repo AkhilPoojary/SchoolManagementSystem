@@ -1,5 +1,10 @@
 package com.school.sba.serviceimple;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.school.sba.entity.AcademicProgram;
 import com.school.sba.entity.School;
 import com.school.sba.entity.User;
 import com.school.sba.enums.UserRole;
@@ -28,6 +34,9 @@ public class UserServiceImple implements UserService{
 
 	@Autowired
 	private ResponseStrcture<UserResponse> resp;
+
+	@Autowired
+	private ResponseStrcture<List<UserResponse>> listresp;
 
 	@Autowired
 	private SubjectRepo subjerepo;
@@ -153,17 +162,31 @@ public class UserServiceImple implements UserService{
 					else {
 						return academicProgramRepository.findById(programId)
 								.map(academicProgram -> {
-									academicProgram.getListOfUsers().add(user);
-									user.getListOfAcademicPrograms().add(academicProgram);
+									if(academicProgram.getListOfSubject().contains(user.getSubject())) {
 
-									userrepo.save(user);
-									academicProgramRepository.save(academicProgram);
+										if(user.getUserRole().equals(UserRole.TEACHER)) {
 
-									resp.setStatus(HttpStatus.OK.value());
-									resp.setMessage("user updated successfully");
-									resp.setData(mapToUserResponse(user));
+											academicProgram.getListOfUsers().add(user);		
+											user.getListOfAcademicPrograms().add(academicProgram);
 
-									return new  ResponseEntity<ResponseStrcture<UserResponse>>(resp, HttpStatus.OK);
+											userrepo.save(user);
+											academicProgramRepository.save(academicProgram);
+
+											resp.setStatus(HttpStatus.OK.value());
+											resp.setMessage("assigned to academic program successfully");
+											resp.setData(mapToUserResponse(user));
+
+											return new ResponseEntity<ResponseStrcture<UserResponse>>(resp, HttpStatus.OK);
+
+										}
+										else {
+											throw new RuntimeException();
+										}
+									}
+									else {
+										throw new RuntimeException();
+									}
+
 
 								})
 								.orElseThrow(() -> new RuntimeException());
@@ -200,7 +223,7 @@ public class UserServiceImple implements UserService{
 
 	@Override
 	public ResponseEntity<ResponseStrcture<UserResponse>> addAdmin(UserRequest user) {
-		User user1 = mapToUser(user);
+	User user1 = mapToUser(user);
 		if(user1.getUserRole().equals(UserRole.ADMIN))
 		{
 			userrepo.save(user1);
@@ -243,8 +266,64 @@ public class UserServiceImple implements UserService{
 		}
 
 	}
+
+
+	@Override
+	public ResponseEntity<ResponseStrcture<List<UserResponse>>> getUserRoleAcademic(String role, int programId) {
+		//	return	academicProgramRepository.findById(programId)
+		//		.map(academic->{
+		//			List<User> listOfUsers = academic.getListOfUsers();
+		//			listOfUsers.forEach(user->{
+		//				if(user.getUserRole().equals(UserRole.ADMIN))
+		//				{
+		//					throw new RuntimeException();
+		//				}
+		//				else if(user.getListOfAcademicPrograms().contains(academic))
+		//				{
+		//			List<User> list=new ArrayList<User>();
+		//			list.add(user);
+		//			resp.setData(mapToUserResponse(user));
+		//			resp.setMessage("user found successfully");
+		//			resp.setStatus(HttpStatus.FOUND.value());
+		//			
+		//			return new ResponseEntity<ResponseStrcture<UserResponse>>(resp,HttpStatus.FOUND);
+		//				}
+		//			
+		//				
+		//			});
+		//		}).orElseThrow(()->new RuntimeException());
+		//	}
+		return academicProgramRepository.findById(programId)
+				.map(program->{
+					UserRole userRole = UserRole.valueOf(role.toUpperCase());
+					if(userRole.equals(userRole.ADMIN))
+					{
+						throw new RuntimeException();
+					}
+					if(EnumSet.allOf(UserRole.class).contains(userRole));
+					{
+						List<User> listOfUser=new ArrayList<User>();
+
+						List<User> users=userrepo.findAllByUserRole(userRole);
+
+						users.forEach(user->{
+							user.getListOfAcademicPrograms().contains(program);
+							listOfUser.add(user);
+						});
+						List<UserResponse> collect = users.stream().map(this::mapToUserResponse).collect(Collectors.toList());
+
+						listresp.setData(collect);
+						listresp.setMessage("user found successfully");
+						listresp.setData(collect);
+
+						return new ResponseEntity<ResponseStrcture<List<UserResponse>>>(listresp,HttpStatus.FOUND);
+					}
+					
+
+				}).orElseThrow(()->new RuntimeException());
+
+	}
+
 }
-
-
 
 
