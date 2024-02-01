@@ -16,4 +16,5 @@ public class SchoolRequest {
 	private String email;
 	private String address;
 	private DayOfWeek day;
+	private boolean isDelete;
 }

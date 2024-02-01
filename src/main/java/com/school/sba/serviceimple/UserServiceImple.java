@@ -3,6 +3,7 @@ package com.school.sba.serviceimple;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.AcademicProgram;
+import com.school.sba.entity.ClassHour;
 import com.school.sba.entity.School;
 import com.school.sba.entity.User;
 import com.school.sba.enums.UserRole;
 import com.school.sba.repository.AacdemicProgramRepository;
+import com.school.sba.repository.ClassHourRepository;
 import com.school.sba.repository.SubjectRepo;
 import com.school.sba.repository.UserRepository;
 import com.school.sba.requestdto.UserRequest;
@@ -45,6 +48,8 @@ public class UserServiceImple implements UserService{
 	private PasswordEncoder encoder;
 
 	private School school;
+	
+	private ClassHourRepository classhourrepo;
 
 	//	@Override
 	//	public ResponseEntity<ResponseStrcture<UserResponse>> addUser(UserRequest user) {
@@ -322,6 +327,29 @@ public class UserServiceImple implements UserService{
 
 				}).orElseThrow(()->new RuntimeException());
 
+	}
+	
+	public void hardDelete()
+	{
+	
+		List<User> deleteUser = userrepo.findAllByIsDelete(true);
+		
+		for(User user:deleteUser)
+		{
+			 int userId = user.getUserId();
+			 Optional<User> findById = userrepo.findById(userId);
+			 User user2 = findById.get();
+			 user2.setSchool(null);
+		
+			ClassHour classHour = classhourrepo.findByUser(user2);
+			
+			classHour.setUser(user2);
+			classhourrepo.save(classHour);
+			
+		
+			userrepo.save(user2);
+			userrepo.delete(user2);
+		}
 	}
 
 }

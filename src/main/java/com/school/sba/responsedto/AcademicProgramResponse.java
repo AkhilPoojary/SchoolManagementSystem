@@ -22,6 +22,7 @@ public class AcademicProgramResponse {
 	private String programName;
 	private LocalDate beginTime;
 	private LocalDate endTime;
+	private boolean isDelete;
 	
 	private List<String> listOfSubjects;
 }

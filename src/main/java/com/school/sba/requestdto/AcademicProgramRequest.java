@@ -24,5 +24,6 @@ public class AcademicProgramRequest {
 	private String programName;
 	private LocalDate beginTime;
 	private LocalDate endTime;
+	private boolean isDelete;
 	
 }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class ClassHourImple implements ClassHourService {
 
 	@Autowired
 	private ResponseStrcture<String> response;
-	
+
 	@Autowired
 	private ResponseStrcture<List<ClassHourResponse>> listresp;
 
@@ -51,24 +52,24 @@ public class ClassHourImple implements ClassHourService {
 
 	@Autowired
 	private ResponseStrcture<ClassHourResponse> resp;
-	
+
 	public List<ClassHourResponse> mapToResponse(List<ClassHour> listofclasshour)
 	{
- 		List<ClassHourResponse> responselist=new ArrayList<ClassHourResponse>();
- 		listofclasshour.forEach(classhour->{
- 			responselist.add(ClassHourResponse.builder()
- 			.beginsAt(classhour.getBeginsAt().toLocalTime())
-			.endAt(classhour.getEndAt().toLocalTime())
-			.classHourId(classhour.getClassHourId())
-			.roomNo(classhour.getRoomNo())
-			.classStatus(classhour.getClassStatus())
-			.day(classhour.getDay())
-			.date(classhour.getDate())
-			.build());
- 		});
- 		
- 		return responselist;
-			
+		List<ClassHourResponse> responselist=new ArrayList<ClassHourResponse>();
+		listofclasshour.forEach(classhour->{
+			responselist.add(ClassHourResponse.builder()
+					.beginsAt(classhour.getBeginsAt().toLocalTime())
+					.endAt(classhour.getEndAt().toLocalTime())
+					.classHourId(classhour.getClassHourId())
+					.roomNo(classhour.getRoomNo())
+					.classStatus(classhour.getClassStatus())
+					.day(classhour.getDay())
+					.date(classhour.getDate())
+					.build());
+		});
+
+		return responselist;
+
 	}
 
 
@@ -176,10 +177,10 @@ public class ClassHourImple implements ClassHourService {
 	{
 		List<ClassHour> listOfClassHours = new ArrayList<>();
 		for (ClassHourRequest classH : classHourRequest) {
-			
+
 			User user = usrerepo.findById(classH.getTeacherId())
 					.orElseThrow(() -> new RuntimeException());
-			
+
 			Subject subject = subjectrepo.findById(classH.getSubjectId())
 					.orElseThrow(() -> new RuntimeException());
 
@@ -231,5 +232,25 @@ public class ClassHourImple implements ClassHourService {
 		return new ResponseEntity<ResponseStrcture<List<ClassHourResponse>>>(listresp, HttpStatus.FOUND);
 
 	}
+
+	//	public void delete(List<ClassHour> ClassHour)
+	//	{
+	//		for(ClassHour clshr:ClassHour)
+	//		{
+	//			int classHourId = clshr.getClassHourId();
+	//			ClassHour classHourObj = classhourrepo.findById(classHourId).orElseThrow(()->new RuntimeException());
+	//			
+	//		List<ClassHour> listofClassHour=new 
+	//				classhourrepo.delete(classHourObj);
+	//			
+	//			
+	//			response.setData(mapToResponse(classHourObj));
+	//			response.setMessage("cLassHour deleted successfully");
+	//			response.setStatus(HttpStatus.FOUND.value());
+	//		}
+	//	}
+
+
+
 }
 

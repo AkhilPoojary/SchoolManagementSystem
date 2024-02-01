@@ -32,6 +32,7 @@ public class AcademicProgram {
 	private String programName;
 	private LocalDate beginTime;
 	private LocalDate endTime;
+	private boolean isDelete;
 
 	@ManyToOne
 	private School school;

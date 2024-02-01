@@ -15,6 +15,8 @@ public interface AcademicProgramService {
 
 	ResponseEntity<ResponseStrcture<List<AcademicProgramResponse>>> findAll(int schoolId);
 
+	ResponseEntity<ResponseStrcture<AcademicProgramResponse>> isDelete(int programid);
+
 
 
 }

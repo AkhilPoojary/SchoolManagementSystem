@@ -111,6 +111,21 @@ public class ScheduleImple implements ScheduleService {
 		}).orElseThrow(()->new RuntimeException());
 		
 	}
+	
+	public ResponseEntity<ResponseStrcture<ScheduleResponse>> delete(Schedule schedule)
+	{
+		int scheduleId = schedule.getScheduleId();
+		Schedule schedule2 = schedulerepo.findById(scheduleId).orElseThrow(()->new RuntimeException());
+		
+		schedulerepo.delete(schedule2);
+		
+		ResponseStrcture<ScheduleResponse> resp=new ResponseStrcture<ScheduleResponse>();
+		resp.setData(mapToResponse(schedule2));
+		resp.setMessage("schedued deleted successfully");
+		resp.setStatus(HttpStatus.FOUND.value());
+		
+		return new  ResponseEntity<ResponseStrcture<ScheduleResponse>>(resp,HttpStatus.FOUND);
+	}
 
 
 

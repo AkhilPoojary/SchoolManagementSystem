@@ -1,6 +1,5 @@
 package com.school.sba.serviceimple;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.AcademicProgram;
-import com.school.sba.entity.School;
 import com.school.sba.entity.Subject;
 import com.school.sba.repository.AacdemicProgramRepository;
+import com.school.sba.repository.ClassHourRepository;
 import com.school.sba.repository.SchoolRepository;
 import com.school.sba.requestdto.AcademicProgramRequest;
 import com.school.sba.responsedto.AcademicProgramResponse;
@@ -37,7 +36,9 @@ public class AacdemicProgramImple implements AcademicProgramService
 
 	@Autowired
 	private ResponseStrcture<AcademicProgramResponse> structure;
-
+	
+	@Autowired
+private ClassHourRepository classrepo;
 
 	@Autowired
 	private ResponseStrcture<List<AcademicProgramResponse>> listStructure;
@@ -125,4 +126,42 @@ public class AacdemicProgramImple implements AcademicProgramService
 	}
 
 
+	@Override
+	public ResponseEntity<ResponseStrcture<AcademicProgramResponse>> isDelete(int programid) {
+		AcademicProgram existingobj = academicrepo.findById(programid).orElseThrow(()->new RuntimeException());
+		
+		if(existingobj.isDelete())
+		{
+			throw new RuntimeException();
+		}
+		existingobj.setDelete(true);
+		AcademicProgram deleAcademic = academicrepo.save(existingobj);
+		
+		structure.setData(mapToAcademicProgramResponse(deleAcademic));
+		structure.setMessage("academic program is delted");
+		structure.setStatus(HttpStatus.FOUND.value());
+		
+		return  new ResponseEntity<ResponseStrcture<AcademicProgramResponse>>(structure,HttpStatus.FOUND);
+	}
+	public void deleted()
+	{
+		List<AcademicProgram> academicList = academicrepo.findAllByIsDelete(true);
+		
+		for(AcademicProgram academic:academicList)
+		{
+			classrepo.deleteAll(academic.getClassHour());
+		}
+		academicrepo.deleteAll(academicList);
+	}
+
 }
+
+//int programid = academic.getProgramid();
+//AcademicProgram academicProgram = academicrepo.findById(programid).get();
+//academicProgram.setListOfUsers(null);
+//academicProgram.setListOfSubject(null);
+//academicProgram.setClassHour(null);
+//academicProgram.setSchool(null);
+//academicrepo.save(academicProgram);
+//
+//academicrepo.delete(academicProgram);

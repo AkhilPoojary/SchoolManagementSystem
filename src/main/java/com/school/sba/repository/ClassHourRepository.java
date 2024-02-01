@@ -6,13 +6,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.school.sba.entity.ClassHour;
+import com.school.sba.entity.User;
 
-@Repository
+
 
 public interface ClassHourRepository extends JpaRepository<ClassHour, Integer>  {
 
 
 
-	boolean existsByBeginsAtAndRoomNo(LocalDateTime beginsAt, int roomNo);
+public	boolean existsByBeginsAtAndRoomNo(LocalDateTime beginsAt, int roomNo);
+
+public ClassHour findByUser(User user2);
+
+
+
 
 }
